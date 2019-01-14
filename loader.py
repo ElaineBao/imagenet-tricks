@@ -13,6 +13,7 @@ class loader(Data.Dataset):
 
     def __getitem__(self, index):
         image_path, label = self.list_file[index].split(' ')
+        label = int(label)
         with open(image_path, 'rb') as f:
             sample = Image.open(f)
             sample = sample.convert('RGB')
