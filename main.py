@@ -19,6 +19,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 from loss import LSCritierion
 from loader import loader
+from transforms import PCANoise
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
@@ -209,6 +210,8 @@ def main_worker(gpu, ngpus_per_node, args):
         transforms.Compose([
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
+            transforms.RandomColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.4),
+            PCANoise(0.1),
             transforms.ToTensor(),
             normalize,
         ]))
