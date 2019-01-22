@@ -17,7 +17,7 @@ import torch.utils.data
 import torch.utils.data.distributed
 import torchvision.transforms as transforms
 # torchvision.models as models
-import resnetd
+import resnetd as models
 from loss import LSCritierion
 from loader import loader
 from transforms import PCANoise
@@ -142,10 +142,10 @@ def main_worker(gpu, ngpus_per_node, args):
     # create model
     if args.pretrained:
         print("=> using pre-trained model '{}'".format(args.arch))
-        model = resnetd.__dict__[args.arch](pretrained=True)
+        model = models.__dict__[args.arch](pretrained=True)
     else:
         print("=> creating model '{}'".format(args.arch))
-        model = resnetd.__dict__[args.arch](zero_init_residual=True)
+        model = models.__dict__[args.arch](zero_init_residual=True)
 
     if args.distributed:
         # For multiprocessing distributed, DistributedDataParallel constructor

@@ -102,13 +102,13 @@ class ResNetD(nn.Module):
         super(ResNetD, self).__init__()
         self.inplanes = 64
         self.conv1 = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1,bias=False),
+            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
-            nn.Conv2d(32, 32, kernel_size=3, stride=1, bias=False),
+            nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
-            nn.Conv2d(32, 64, kernel_size=3, stride=1, bias=False),
+            nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1, bias=False),
         )
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -138,18 +138,12 @@ class ResNetD(nn.Module):
                     nn.init.constant_(m.bn2.weight, 0)
 
     def _make_layer(self, block, planes, blocks, stride=1):
-        downsample = None
-        if stride != 1:
-            downsample = nn.Sequential(
-	            nn.AvgPool2d(kernel_size=2, stride=2),
-                conv1x1(self.inplanes, planes * block.expansion, stride),
-                nn.BatchNorm2d(planes * block.expansion),
-            )
-        elif self.inplanes != planes * block.expansion:
-            downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes * block.expansion),
-                nn.BatchNorm2d(planes * block.expansion),
-            )
+        downsample = nn.Sequential(
+            nn.AvgPool2d(kernel_size=stride, stride=stride),
+            conv1x1(self.inplanes, planes * block.expansion),
+            nn.BatchNorm2d(planes * block.expansion),
+        )
+
 
         layers = []
         layers.append(block(self.inplanes, planes, stride, downsample))
