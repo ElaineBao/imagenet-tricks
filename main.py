@@ -16,7 +16,8 @@ import torch.multiprocessing as mp
 import torch.utils.data
 import torch.utils.data.distributed
 import torchvision.transforms as transforms
-import torchvision.models as models
+# torchvision.models as models
+import resnetd
 from loss import LSCritierion
 from loader import loader
 from transforms import PCANoise
@@ -141,10 +142,10 @@ def main_worker(gpu, ngpus_per_node, args):
     # create model
     if args.pretrained:
         print("=> using pre-trained model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](pretrained=True)
+        model = resnetd.__dict__[args.arch](pretrained=True)
     else:
         print("=> creating model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](zero_init_residual=True)
+        model = resnetd.__dict__[args.arch](zero_init_residual=True)
 
     if args.distributed:
         # For multiprocessing distributed, DistributedDataParallel constructor
@@ -210,7 +211,7 @@ def main_worker(gpu, ngpus_per_node, args):
         transforms.Compose([
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
-            transforms.RandomColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.4),
+            transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.4),
             PCANoise(0.1),
             transforms.ToTensor(),
             normalize,
