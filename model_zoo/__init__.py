@@ -14,3 +14,8 @@ from .resnextd import resnextd152_64x4d
 from .deform_resnetd import deform_resnetd50
 from .deform_resnetd import deform_resnetd101
 from .deform_resnetd import deform_resnetd152
+
+# torchvision models
+from torchvision.models import resnet50
+from torchvision.models import resnet101
+from torchvision.models import resnet152
