@@ -26,15 +26,15 @@ def conv1x1(in_planes, out_planes, stride=1):
 
 
 class Bottleneck(nn.Module):
-    expansion = 2
+    expansion = 4
 
     def __init__(self, inplanes, planes, stride=1, downsample=None, num_group=32):
         super(Bottleneck, self).__init__()
-        self.conv1 = conv1x1(inplanes, planes)
-        self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = conv3x3(planes, planes, stride, groups=num_group)
-        self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = conv1x1(planes, planes * self.expansion)
+        self.conv1 = conv1x1(inplanes, planes * 2)
+        self.bn1 = nn.BatchNorm2d(planes * 2)
+        self.conv2 = conv3x3(planes * 2, planes * 2, stride, groups=num_group)
+        self.bn2 = nn.BatchNorm2d(planes * 2)
+        self.conv3 = conv1x1(planes * 2, planes * self.expansion)
         self.bn3 = nn.BatchNorm2d(planes * self.expansion)
         self.relu = nn.ReLU(inplace=True)
         self.downsample = downsample
@@ -73,7 +73,7 @@ class ResNeXtD(nn.Module):
            widen_factor: factor to adjust the channel dimensionality
         """
         super(ResNeXtD, self).__init__()
-        self.inplanes = num_group * base_width
+        self.inplanes = 64
         self.conv1 = nn.Sequential(
             nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(32),
@@ -86,10 +86,10 @@ class ResNeXtD(nn.Module):
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self.layer1 = self._make_layer(block, num_group*base_width, layers[0], num_group)
-        self.layer2 = self._make_layer(block, num_group*base_width*block.expansion, layers[1], num_group, stride=2)
-        self.layer3 = self._make_layer(block, num_group*base_width*(block.expansion**2), layers[2], num_group, stride=2)
-        self.layer4 = self._make_layer(block, num_group*base_width*(block.expansion**3), layers[3], num_group, stride=2)
+        self.layer1 = self._make_layer(block, 64, layers[0], num_group)
+        self.layer2 = self._make_layer(block, 128, layers[1], num_group, stride=2)
+        self.layer3 = self._make_layer(block, 256, layers[2], num_group, stride=2)
+        self.layer4 = self._make_layer(block, 512, layers[3], num_group, stride=2)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
