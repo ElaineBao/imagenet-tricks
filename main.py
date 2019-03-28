@@ -35,6 +35,7 @@ parser.add_argument('--epochs', default=90, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
+parser.add_argument('--save_model_path',type=str, default='checkpoint/')
 parser.add_argument('--warmup', type=int, default=5, help='use 5 epochs to warm up')
 parser.add_argument('--mixup', default=0, type=float,
                     help='add mixup, with alpha value. if 0, no mixup')
@@ -83,6 +84,9 @@ best_acc1 = 0
 
 def main():
     args = parser.parse_args()
+
+    if not os.path.exists(args.save_model_path):
+        os.mkdir(args.save_model_path)
 
     if args.seed is not None:
         random.seed(args.seed)
@@ -256,7 +260,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'state_dict': model.state_dict(),
                 'best_acc1': best_acc1,
                 'optimizer' : optimizer.state_dict(),
-            }, is_best)
+            }, is_best, args.save_model_path)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
@@ -357,11 +361,12 @@ def validate(val_loader, model, criterion, args):
     return top1.avg
 
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
+def save_checkpoint(state, is_best, save_folder):
+    filename = os.path.join(save_folder, '{}_{:03d}.pth'.format(state['arch'], state['epoch']))
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, 'model_best.pth.tar')
-
+        best_filename = os.path.join(save_folder, '{}_best.pth'.format(state['arch']))
+        shutil.copyfile(filename, best_filename)
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""

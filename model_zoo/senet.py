@@ -265,7 +265,7 @@ class SENet(nn.Module):
 
 
 
-def se_resnetd50(num_classes=1000, pretrained=False):
+def se_resnetd50(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNetBottleneck, [3, 4, 6, 3], groups=1, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -275,7 +275,7 @@ def se_resnetd50(num_classes=1000, pretrained=False):
     return model
 
 
-def se_resnetd101(num_classes=1000, pretrained=False):
+def se_resnetd101(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNetBottleneck, [3, 4, 23, 3], groups=1, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -285,7 +285,7 @@ def se_resnetd101(num_classes=1000, pretrained=False):
     return model
 
 
-def se_resnetd152(num_classes=1000, pretrained=False):
+def se_resnetd152(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNetBottleneck, [3, 8, 36, 3], groups=1, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -295,7 +295,7 @@ def se_resnetd152(num_classes=1000, pretrained=False):
     return model
 
 
-def se_resnextd50_32x4d(num_classes=1000, pretrained=False):
+def se_resnextd50_32x4d(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNeXtBottleneck, [3, 4, 6, 3], groups=32, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -304,7 +304,7 @@ def se_resnextd50_32x4d(num_classes=1000, pretrained=False):
         model.load_state_dict(model_zoo.load_url(model_urls['se_resnetd50_32x4d']))
     return model
 
-def se_resnextd50_64x4d(num_classes=1000, pretrained=False):
+def se_resnextd50_64x4d(num_classes=1000, pretrained=False, **kwargs):
     """Constructs a ResNet-50 model.
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
@@ -317,7 +317,7 @@ def se_resnextd50_64x4d(num_classes=1000, pretrained=False):
         model.load_state_dict(model_zoo.load_url(model_urls['se_resnetd50_64x4d']))
     return model
 
-def se_resnextd101_32x4d(num_classes=1000, pretrained=False):
+def se_resnextd101_32x4d(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNeXtBottleneck, [3, 4, 23, 3], groups=32, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -326,7 +326,7 @@ def se_resnextd101_32x4d(num_classes=1000, pretrained=False):
         model.load_state_dict(model_zoo.load_url(model_urls['se_resnextd101_32x4d']))
     return model
 
-def se_resnextd101_64x4d(num_classes=1000, pretrained=False):
+def se_resnextd101_64x4d(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNeXtBottleneck, [3, 4, 23, 3], groups=64, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -335,7 +335,7 @@ def se_resnextd101_64x4d(num_classes=1000, pretrained=False):
         model.load_state_dict(model_zoo.load_url(model_urls['se_resnextd101_64x4d']))
     return model
 
-def se_resnextd152_32x4d(num_classes=1000, pretrained=False):
+def se_resnextd152_32x4d(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNeXtBottleneck, [3, 8, 36, 3], groups=32, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -344,7 +344,7 @@ def se_resnextd152_32x4d(num_classes=1000, pretrained=False):
         model.load_state_dict(model_zoo.load_url(model_urls['se_resnextd101_32x4d']))
     return model
 
-def se_resnextd152_64x4d(num_classes=1000, pretrained=False):
+def se_resnextd152_64x4d(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEResNeXtBottleneck, [3, 8, 36, 3], groups=64, reduction=16,
                   dropout_p=None, inplanes=64, conv1_filter=32,
                   downsample_kernel_size=1, downsample_padding=0,
@@ -353,7 +353,7 @@ def se_resnextd152_64x4d(num_classes=1000, pretrained=False):
         model.load_state_dict(model_zoo.load_url(model_urls['se_resnextd101_64x4d']))
     return model
 
-def senet154(num_classes=1000, pretrained=False):
+def senet154(num_classes=1000, pretrained=False, **kwargs):
     model = SENet(SEBottleneck, [3, 8, 36, 3], groups=64, reduction=16,
                   dropout_p=0.2, inplanes=128, conv1_filter=64,
                   downsample_kernel_size=3, downsample_padding=1,
